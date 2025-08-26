@@ -1,0 +1,3 @@
+[run]
+omit =
+    mdtable/_version.py
