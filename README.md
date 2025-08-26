@@ -47,7 +47,7 @@ pip install -e .
 
 ## Usage
 
-```zsh
+```text
 usage: mdtable [-h] --input INPUT [--output OUTPUT] [--align ALIGN] [--preview]
 
 Generate Markdown tables from CSV
