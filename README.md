@@ -48,10 +48,18 @@ pip install -e .
 ## Usage
 
 ```zsh
-mdtable
+usage: mdtable [-h] --input INPUT [--output OUTPUT] [--align ALIGN] [--preview]
+
+Generate Markdown tables from CSV
+
+options:
+  -h, --help       show this help message and exit
+  --input INPUT    Path to CSV file
+  --output OUTPUT  Path to save Markdown output
+  --align ALIGN    Comma-separated alignment (e.g. left,center,right)
+  --preview        Preview table in terminal
 ```
 
-The output should be: `Successfully installed your project file: mdtable`
 
 ## Contributing
 
