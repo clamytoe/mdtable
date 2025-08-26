@@ -3,7 +3,7 @@
 test:
 	pytest tests
 
-coverage:
+cov:
 	pytest --cov=mdtable --cov-report=term-missing
 
 lint:
