@@ -6,25 +6,22 @@ ALIGN_MAP = {
     "center": ":---:",
     "right": "---:",
 }
+VALID_ALIGNMENTS = {"left", "center", "right"}
 
 
-def read_csv(input_path):
-    if input_path:
-        with open(input_path, newline="", encoding="utf-8") as f:
-            return list(csv.reader(f))
-    else:
-        return list(csv.reader(sys.stdin))
+def generate_md_table(
+    data: list[list[str]], alignments: str | list[str] | None = None
+) -> str:
+    """
+    Generate a Markdown-formatted table from a list of rows.
 
+    Parameters:
+        data (List[List[str]]): A list of rows, where each row is a list of string cells.
+        alignments (Optional[Union[List[str], str]]): Column alignments ('left', 'center', 'right') as a list or comma-separated string.
 
-def write_output(output_path, content):
-    if output_path:
-        with open(output_path, "w", encoding="utf-8") as f:
-            f.write(content)
-    else:
-        print(content)
-
-
-def generate_md_table(data, alignments=None):
+    Returns:
+        str: The generated Markdown table as a string.
+    """
     if not data:
         return ""
 
@@ -34,6 +31,7 @@ def generate_md_table(data, alignments=None):
 
     # Parse alignments
     if alignments:
+        alignments = normalize_alignments(alignments)
         if isinstance(alignments, str):
             align_list = [a.strip().lower() for a in alignments.split(",")]
         elif isinstance(alignments, list):
@@ -50,3 +48,54 @@ def generate_md_table(data, alignments=None):
         table.append("| " + " | ".join(padded_row) + " |")
 
     return "\n".join(table)
+
+
+def normalize_alignments(alignments: str | list[str]) -> list[str]:
+    """
+    Normalize alignment input into a lowercase list of alignment values.
+
+    Parameters:
+        alignments (Union[str, List[str]]): Alignment input as a comma-separated string or list of strings.
+
+    Returns:
+        List[str]: Normalized list of alignment values in lowercase.
+    """
+    if isinstance(alignments, str):
+        alignments = alignments.split(",")
+    normalized = [a.strip().lower() for a in alignments]
+    for a in normalized:
+        if a not in VALID_ALIGNMENTS:
+            raise ValueError(f"Invalid alignment: '{a}'")
+    return normalized
+
+
+def read_csv(input_path: str = "") -> list[list[str]]:
+    """
+    Read a CSV file and return its contents as a list of rows.
+
+    Parameters:
+        input_path (str): Path to the input CSV file. If empty, reads from stdin or a default source.
+
+    Returns:
+        List[List[str]]: A list of rows, where each row is a list of string cells.
+    """
+    if input_path:
+        with open(input_path, newline="", encoding="utf-8") as f:
+            return list(csv.reader(f))
+    else:
+        return list(csv.reader(sys.stdin))
+
+
+def write_output(output_path: str, content: str) -> None:
+    """
+    Write content to a file or stdout.
+
+    Parameters:
+        output_path (str): Path to the output file. If '-', content is written to stdout.
+        content (str): The content to write.
+    """
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(content)
+    else:
+        print(content)

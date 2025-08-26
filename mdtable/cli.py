@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""
-cli.py
-
-Markdown Table Generator
-"""
 import argparse
 
 from .core import generate_md_table, read_csv, write_output
 from .preview import preview_table
 
 
-def main():
+def main() -> None:
+    """
+    Main entry point for the CLI utility.
+
+    Returns:
+        None
+    """
     parser = argparse.ArgumentParser(description="Generate Markdown tables from CSV")
     parser.add_argument("--input", required=True, help="Path to CSV file")
     parser.add_argument("--output", help="Path to save Markdown output")
