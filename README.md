@@ -62,6 +62,24 @@ options:
 
 ## Examples
 
+For the following examples, I will be using the following data:
+
+*xrp-rich.csv*
+
+```csv
+Percentage, # Accounts, Balance equals (or greater than)
+0.01 %, 691, 6_692_587.586946 XRP
+0.1 %, 6_910, 350_491.824569 XRP
+0.2 %, 13_820, 197_695.303092 XRP
+0.5 %, 34_549, 96_445.903096 XRP
+1 %, 69_098, 50_025.789126 XRP
+2 %, 138_197, 25_003.992913 XRP
+3 %, 207_295, 15_642.899993 XRP
+4 %, 276_394, 10_686.116118 XRP
+5 %, 345_492, 8_370.264763 XRP
+10 %, 690_984, 2_396.754360 XRP
+```
+
 ### Example 1
 
 ```zsh
