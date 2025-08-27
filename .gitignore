@@ -111,3 +111,7 @@ ENV/
 
 # env file
 .env
+
+# mdtable specific
+xrp-rich.csv
+output.md
