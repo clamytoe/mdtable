@@ -48,11 +48,7 @@ def generate_md_table(
 
     # Parse alignments
     if alignments:
-        alignments = normalize_alignments(alignments)
-        if isinstance(alignments, str):
-            align_list = [a.strip().lower() for a in alignments.split(",")]
-        elif isinstance(alignments, list):
-            align_list = [a.strip().lower() for a in alignments]
+        align_list = normalize_alignments(alignments)
         align_row = [ALIGN_MAP.get(a, ":---") for a in align_list]
     else:
         align_row = [":---"] * num_cols
@@ -94,11 +90,10 @@ def read_csv(input_path: str = "") -> list[list[str]]:
     Read a CSV file and return its contents as a list of rows.
 
     Parameters:
-        input_path (str): Path to the input CSV file. If empty, reads from stdin or a
-        default source.
+        input_path (str): Path to the input CSV file. If set to "-", reads from stdin.
 
     Returns:
-        List[List[str]]: A list of rows, where each row is a list of string cells.
+        list[list[str]]: A list of rows, where each row is a list of string cells.
     """
     if input_path == "-":
         return list(csv.reader(sys.stdin))
