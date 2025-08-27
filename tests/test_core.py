@@ -1,6 +1,15 @@
+import sys
+from io import StringIO
+
 import pytest
 
-from mdtable.core import format_commas, generate_md_table, normalize_alignments
+from mdtable.core import (
+    format_commas,
+    generate_md_table,
+    normalize_alignments,
+    read_csv,
+)
+from mdtable.preview import preview_table
 
 
 @pytest.mark.parametrize(
@@ -123,3 +132,25 @@ def test_generate_md_table_alignment():
     data = [["Header1", "Header2"], ["Row1Col1", "Row1Col2"]]
     with pytest.raises(ValueError):
         generate_md_table(data, alignments=["diagonal", "left"])
+
+
+def test_normalize_alignments_strip_and_lower():
+    result = normalize_alignments(" Left ,CENTER , right ")
+    assert result == ["left", "center", "right"]
+
+
+def test_read_csv_from_stdin(monkeypatch):
+    csv_data = "Name,Score\nAlice,90\nBob,85"
+    monkeypatch.setattr(sys, "stdin", StringIO(csv_data))
+    result = read_csv("-")  # conventionally "-" means stdin
+    assert result == [["Name", "Score"], ["Alice", "90"], ["Bob", "85"]]
+
+
+def test_preview_table(monkeypatch):
+    data = [["Name", "Score"], ["Alice", "90"]]
+    captured = StringIO()
+    monkeypatch.setattr(sys, "stdout", captured)
+    preview_table(data)
+    output = captured.getvalue()
+    assert "Alice" in output
+    assert "Score" in output

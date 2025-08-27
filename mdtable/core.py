@@ -100,11 +100,11 @@ def read_csv(input_path: str = "") -> list[list[str]]:
     Returns:
         List[List[str]]: A list of rows, where each row is a list of string cells.
     """
-    if input_path:
+    if input_path == "-":
+        return list(csv.reader(sys.stdin))
+    else:
         with open(input_path, newline="", encoding="utf-8") as f:
             return list(csv.reader(f))
-    else:
-        return list(csv.reader(sys.stdin))
 
 
 def write_output(output_path: str, content: str) -> None:
