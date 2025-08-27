@@ -23,7 +23,8 @@ def test_cli_output(monkeypatch: pytest.MonkeyPatch) -> None:
     Test the CLI output using monkeypatching.
 
     Parameters:
-        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and environment during the test.
+        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and
+        environment during the test.
 
     Returns:
         None
