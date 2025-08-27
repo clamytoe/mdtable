@@ -8,6 +8,7 @@ from mdtable.core import (
     generate_md_table,
     normalize_alignments,
     read_csv,
+    write_output,
 )
 from mdtable.preview import preview_table
 
@@ -154,3 +155,15 @@ def test_preview_table(monkeypatch):
     output = captured.getvalue()
     assert "Alice" in output
     assert "Score" in output
+
+
+def test_alignments_as_string():
+    result = normalize_alignments("left,center,right")
+    assert result == ["left", "center", "right"]
+
+
+def test_write_output_stdout(capsys):
+    content = "Hello, Markdown!"
+    write_output("", content)
+    captured = capsys.readouterr()
+    assert captured.out.strip() == content
