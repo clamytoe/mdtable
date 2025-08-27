@@ -28,7 +28,8 @@ def markdown_output(sample_table: list[list[str]]) -> str:
     Generate the expected Markdown-formatted output for a sample table.
 
     Parameters:
-        sample_table (List[List[str]]): A list of rows, where each row is a list of string cells.
+        sample_table (List[List[str]]): A list of rows, where each row is a list of
+        string cells.
 
     Returns:
         str: The expected Markdown output as a string.
@@ -39,7 +40,8 @@ def markdown_output(sample_table: list[list[str]]) -> str:
 @pytest.fixture
 def malformed_table() -> list[list[str]]:
     """
-    Provide a malformed table fixture for testing error handling and formatting edge cases.
+    Provide a malformed table fixture for testing error handling and formatting edge
+    cases.
 
     Returns:
         List[List[str]]: A list of rows, where each row is a list of string cells.
@@ -57,7 +59,8 @@ def cli_args(monkeypatch: pytest.MonkeyPatch) -> Callable:
     Provide a helper function to inject CLI arguments using monkeypatching.
 
     Parameters:
-        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and environment during the test.
+        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and
+        environment during the test.
 
     Returns:
         Callable: A function that sets sys.argv to simulate CLI input.
@@ -75,7 +78,8 @@ def capture_stdout(monkeypatch: pytest.MonkeyPatch) -> StringIO:
     Provide a fixture to capture stdout output during tests using monkeypatching.
 
     Parameters:
-        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and environment during the test.
+        monkeypatch (pytest.MonkeyPatch): Fixture for safely patching built-ins and
+        environment during the test.
 
     Returns:
         StringIO: A StringIO object that captures printed output from sys.stdout.
