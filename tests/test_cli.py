@@ -2,6 +2,7 @@ import subprocess
 import sys
 import tempfile
 from io import StringIO
+from pathlib import Path
 
 import pytest
 
@@ -50,7 +51,17 @@ def test_cli_output(monkeypatch: pytest.MonkeyPatch) -> None:
         assert "| Alice   | 30  | NYC     |" in output
 
 
-def test_cli_print(monkeypatch):
+def test_cli_print(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Simulates CLI output by monkeypatching built-in functions.
+
+    Parameters:
+        monkeypatch (pytest.MonkeyPatch): Pytest fixture used to override built-ins
+        like `print` or `sys.stdout` during the test.
+
+    Returns:
+        None
+    """
     csv_content = "Percentage,# Accounts,Balance\n0.01 %,691,6_692_587.586946 XRP"
     with tempfile.NamedTemporaryFile(
         mode="w+", suffix=".csv", delete=False
@@ -71,7 +82,19 @@ def test_cli_print(monkeypatch):
         assert "6,692,587.586946 XRP" in output
 
 
-def test_cli_output_file(monkeypatch, tmp_path):
+def test_cli_output_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+    """
+    Simulates CLI output and writes to a temporary file using monkeypatching.
+
+    Parameters:
+        monkeypatch (pytest.MonkeyPatch): Fixture used to override built-ins
+        like `print` or `sys.stdout` during the test.
+        tmp_path (Path): Pytest fixture providing a temporary directory as a
+        pathlib.Path object.
+
+    Returns:
+        None
+    """
     csv_file = tmp_path / "input.csv"
     csv_file.write_text("Percentage,# Accounts,Balance\n0.1 %,6910,350_491.824569 XRP")
 

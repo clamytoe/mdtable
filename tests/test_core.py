@@ -118,36 +118,83 @@ def test_normalize_alignments_invalid(invalid_input: str | list[str]) -> None:
         normalize_alignments(invalid_input)
 
 
-def test_generate_md_table_empty():
+def test_generate_md_table_empty() -> None:
+    """
+    Validates that generate_md_table returns an empty string when given no data.
+
+    Returns:
+        None
+    """
     with pytest.raises(ValueError):
         generate_md_table([], alignments=["left"])
 
 
-def test_generate_md_table_misaligned_columns():
+def test_generate_md_table_misaligned_columns() -> None:
+    """
+    Ensures generate_md_table raises a ValueError when column count and alignment count
+    mismatch.
+
+    Returns:
+        None
+    """
+
     data = [["Header1", "Header2"], ["Row1Col1"]]  # Missing second column
     with pytest.raises(ValueError):
         generate_md_table(data, alignments=["left", "right"])
 
 
-def test_generate_md_table_alignment():
+def test_generate_md_table_alignment() -> None:
+    """
+    Ensures generate_md_table raises a ValueError for unsupported alignment values.
+
+    Returns:
+        None
+    """
     data = [["Header1", "Header2"], ["Row1Col1", "Row1Col2"]]
     with pytest.raises(ValueError):
         generate_md_table(data, alignments=["diagonal", "left"])
 
 
-def test_normalize_alignments_strip_and_lower():
+def test_normalize_alignments_strip_and_lower() -> None:
+    """
+    Verifies that normalize_alignments strips whitespace and converts values to
+    lowercase.
+
+    Returns:
+        None
+    """
     result = normalize_alignments(" Left ,CENTER , right ")
     assert result == ["left", "center", "right"]
 
 
-def test_read_csv_from_stdin(monkeypatch):
+def test_read_csv_from_stdin(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Simulates reading CSV data from stdin using monkeypatching.
+
+    Parameters:
+        monkeypatch (pytest.MonkeyPatch): Fixture used to override `sys.stdin` with
+        mock input.
+
+    Returns:
+        None
+    """
     csv_data = "Name,Score\nAlice,90\nBob,85"
     monkeypatch.setattr(sys, "stdin", StringIO(csv_data))
     result = read_csv("-")  # conventionally "-" means stdin
     assert result == [["Name", "Score"], ["Alice", "90"], ["Bob", "85"]]
 
 
-def test_preview_table(monkeypatch):
+def test_preview_table(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    Verifies that preview_table writes formatted Markdown output to stdout.
+
+    Parameters:
+        monkeypatch (pytest.MonkeyPatch): Fixture used to redirect `sys.stdout` for
+        capturing output.
+
+    Returns:
+        None
+    """
     data = [["Name", "Score"], ["Alice", "90"]]
     captured = StringIO()
     monkeypatch.setattr(sys, "stdout", captured)
@@ -157,12 +204,29 @@ def test_preview_table(monkeypatch):
     assert "Score" in output
 
 
-def test_alignments_as_string():
+def test_alignments_as_string() -> None:
+    """
+    Verifies that alignments_as_string converts a list of alignment values into a
+    comma-separated string.
+
+    Returns:
+        None
+    """
     result = normalize_alignments("left,center,right")
     assert result == ["left", "center", "right"]
 
 
-def test_write_output_stdout(capsys):
+def test_write_output_stdout(capsys: pytest.CaptureFixture) -> None:
+    """
+    Verifies that write_output sends content to stdout and can be captured via capsys.
+
+    Parameters:
+        capsys (pytest.CaptureFixture): Pytest fixture used to intercept and inspect
+        stdout output.
+
+    Returns:
+        None
+    """
     content = "Hello, Markdown!"
     write_output("", content)
     captured = capsys.readouterr()
