@@ -1,3 +1,6 @@
+from .core import format_commas
+
+
 # Format row
 def fmt_row(col_widths: list[int], num_cols: int, row: list[str]) -> str:
     """
@@ -39,8 +42,10 @@ def preview_table(
     Render a Markdown-style table preview in the terminal.
 
     Parameters:
-        data (List[List[str]]): A list of rows, where each row is a list of string cells.
-        alignments (Optional[Union[List[str], str]]): Column alignments ('left', 'center', 'right') as a list or comma-separated string.
+        data (List[List[str]]): A list of rows, where each row is a list of string
+        cells.
+        alignments (Optional[Union[List[str], str]]): Column alignments ('left',
+        'center', 'right') as a list or comma-separated string.
 
     Returns:
         None
@@ -56,9 +61,11 @@ def preview_table(
             if i < num_cols:
                 col_widths[i] = max(col_widths[i], len(cell))
 
+    formatted_data = [[format_commas(cell) for cell in row] for row in data]
+
     # Assemble preview
     lines = [hr(col_widths), fmt_row(col_widths, num_cols, headers), hr(col_widths)]
-    for row in rows:
+    for row in formatted_data:
         lines.append(fmt_row(col_widths, num_cols, row))
     lines.append(hr(col_widths))
 

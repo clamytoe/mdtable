@@ -9,6 +9,19 @@ ALIGN_MAP = {
 VALID_ALIGNMENTS = {"left", "center", "right"}
 
 
+def format_commas(cell: str) -> str:
+    """
+    Replace underscores with commas in numeric strings.
+
+    Parameters:
+        cell (str): A string cell from the table.
+
+    Returns:
+        str: The formatted cell with underscores replaced by commas.
+    """
+    return cell.replace("_", ",")
+
+
 def generate_md_table(
     data: list[list[str]], alignments: str | list[str] | None = None
 ) -> str:
@@ -40,10 +53,12 @@ def generate_md_table(
     else:
         align_row = [":---"] * num_cols
 
+    formatted_rows = [[format_commas(cell) for cell in row] for row in rows]
+
     # Build table
     table = ["| " + " | ".join(headers) + " |"]
     table.append("| " + " | ".join(align_row) + " |")
-    for row in rows:
+    for row in formatted_rows:
         padded_row = row + [""] * (num_cols - len(row))  # pad if row is short
         table.append("| " + " | ".join(padded_row) + " |")
 
