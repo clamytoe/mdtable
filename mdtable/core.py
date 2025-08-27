@@ -29,14 +29,18 @@ def generate_md_table(
     Generate a Markdown-formatted table from a list of rows.
 
     Parameters:
-        data (List[List[str]]): A list of rows, where each row is a list of string cells.
-        alignments (Optional[Union[List[str], str]]): Column alignments ('left', 'center', 'right') as a list or comma-separated string.
+        data (List[List[str]]): A list of rows, where each row is a list of string
+        cells.
+        alignments (Optional[Union[List[str], str]]): Column alignments ('left',
+        'center', 'right') as a list or comma-separated string.
 
     Returns:
         str: The generated Markdown table as a string.
     """
     if not data:
-        return ""
+        raise ValueError("Table data is empty.")
+    elif not all(len(row) == len(data[0]) for row in data[1:]):
+        raise ValueError("All rows must have the same number of columns.")
 
     headers = data[0]
     rows = data[1:]
@@ -70,7 +74,8 @@ def normalize_alignments(alignments: str | list[str]) -> list[str]:
     Normalize alignment input into a lowercase list of alignment values.
 
     Parameters:
-        alignments (Union[str, List[str]]): Alignment input as a comma-separated string or list of strings.
+        alignments (Union[str, List[str]]): Alignment input as a comma-separated string
+        or list of strings.
 
     Returns:
         List[str]: Normalized list of alignment values in lowercase.
@@ -89,7 +94,8 @@ def read_csv(input_path: str = "") -> list[list[str]]:
     Read a CSV file and return its contents as a list of rows.
 
     Parameters:
-        input_path (str): Path to the input CSV file. If empty, reads from stdin or a default source.
+        input_path (str): Path to the input CSV file. If empty, reads from stdin or a
+        default source.
 
     Returns:
         List[List[str]]: A list of rows, where each row is a list of string cells.
@@ -106,7 +112,8 @@ def write_output(output_path: str, content: str) -> None:
     Write content to a file or stdout.
 
     Parameters:
-        output_path (str): Path to the output file. If '-', content is written to stdout.
+        output_path (str): Path to the output file. If '-', content is written to
+        stdout.
         content (str): The content to write.
     """
     if output_path:

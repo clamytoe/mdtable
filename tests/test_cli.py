@@ -1,4 +1,5 @@
 import subprocess
+import sys
 import tempfile
 from io import StringIO
 
@@ -47,3 +48,53 @@ def test_cli_output(monkeypatch: pytest.MonkeyPatch) -> None:
 
         assert "| Name    | Age | City    |" in output
         assert "| Alice   | 30  | NYC     |" in output
+
+
+def test_cli_print(monkeypatch):
+    csv_content = "Percentage,# Accounts,Balance\n0.01 %,691,6_692_587.586946 XRP"
+    with tempfile.NamedTemporaryFile(
+        mode="w+", suffix=".csv", delete=False
+    ) as temp_csv:
+        temp_csv.write(csv_content)
+        temp_csv.flush()
+
+        monkeypatch.setattr(sys, "argv", ["mdtable", "--input", temp_csv.name])
+        captured = StringIO()
+        monkeypatch.setattr(sys, "stdout", captured)
+
+        try:
+            cli.main()
+        except SystemExit:
+            pass
+
+        output = captured.getvalue()
+        assert "6,692,587.586946 XRP" in output
+
+
+def test_cli_output_file(monkeypatch, tmp_path):
+    csv_file = tmp_path / "input.csv"
+    csv_file.write_text("Percentage,# Accounts,Balance\n0.1 %,6910,350_491.824569 XRP")
+
+    output_file = tmp_path / "output.md"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "mdtable",
+            "--input",
+            str(csv_file),
+            "--output",
+            str(output_file),
+            "--align",
+            "right,center,right",
+        ],
+    )
+
+    try:
+        cli.main()
+    except SystemExit:
+        pass
+
+    assert output_file.exists()
+    content = output_file.read_text()
+    assert "350,491.824569 XRP" in content

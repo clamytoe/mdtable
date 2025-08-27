@@ -106,3 +106,20 @@ def test_normalize_alignments_invalid(invalid_input: str | list[str]) -> None:
     """
     with pytest.raises(ValueError, match="Invalid alignment"):
         normalize_alignments(invalid_input)
+
+
+def test_generate_md_table_empty():
+    with pytest.raises(ValueError):
+        generate_md_table([], alignments=["left"])
+
+
+def test_generate_md_table_misaligned_columns():
+    data = [["Header1", "Header2"], ["Row1Col1"]]  # Missing second column
+    with pytest.raises(ValueError):
+        generate_md_table(data, alignments=["left", "right"])
+
+
+def test_generate_md_table_alignment():
+    data = [["Header1", "Header2"], ["Row1Col1", "Row1Col2"]]
+    with pytest.raises(ValueError):
+        generate_md_table(data, alignments=["diagonal", "left"])
